@@ -13,6 +13,10 @@ case $key in
     ENVIRONMENT="$2"
     shift # past argument
     ;;
+    -arg|--argument)
+    JVM="$2"
+    shift # past argument
+    ;;
     start)
     MODE="start"
     ;;
@@ -87,7 +91,7 @@ elif [ "$MODE" = "start" ]; then
         echo "Application can't start because it already running"
         exit 1;
     else
-        nohup ${_java} -Dspring.profiles.active=${ENVIRONMENT} -jar ${EXECUTABLE} > /dev/null 2>&1 &
+        nohup ${_java} ${JVM} -Dspring.profiles.active=${ENVIRONMENT} -jar ${EXECUTABLE} > /dev/null 2>&1 &
         echo $! > ${pidFile}
         echo "Started"
         exit 0;

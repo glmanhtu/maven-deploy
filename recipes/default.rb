@@ -6,12 +6,14 @@
 #
 # All rights reserved - Do Not Redistribute
 #
+include_recipe 'maven-deploy::forward'
 
 profile = node['maven-deploy']['profile']
 source_dir = "#{node['maven-deploy']['dir']}/#{node['maven-deploy']['application']['name']}"
 repo = "#{source_dir}/repo"
 jar_name = node['maven-deploy']['jar']['name']
 jar_location = "#{repo}/#{node['maven-deploy']['jar']['location']}/#{jar_name}"
+jvm = node['maven-deploy']['jar']['arg']
 
 directory source_dir do
   owner 'ubuntu'
@@ -55,5 +57,5 @@ bash 'maven build project' do
 end
 
 bash 'start service' do
-  code "./tmp/service.sh start -e #{profile} -jar #{jar_location}"
+  code "./tmp/service.sh start -e #{profile} -jar #{jar_location} -arg #{jvm}"
 end

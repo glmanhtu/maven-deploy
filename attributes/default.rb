@@ -11,6 +11,9 @@ default['maven-deploy']['jar']['name'] = ''
 # Location of your executable jar, usually in target
 default['maven-deploy']['jar']['location'] = 'target'
 
+# JVM argument 
+default['maven-deploy']['jar']['arg']	=	''
+
 # Default spring active profile
 default['maven-deploy']['profile'] = 'production'
 
@@ -23,3 +26,8 @@ default['maven-deploy']['git']['branch'] = 'master'
 default['maven-deploy']['git']['key'] = ''
 
 
+default['maven-deploy']['forward']['enable'] = false
+default['maven-deploy']['forward']['from']['host'] = ''
+default['maven-deploy']['forward']['from']['port'] = '80'
+default['maven-deploy']['forward']['to']['host'] = ''
+default['maven-deploy']['forward']['to']['port'] = '8080'
