@@ -20,6 +20,7 @@ directory source_dir do
   group 'ubuntu'
   mode '0666'
   action :create
+  recursive true
 end
 
 directory "/var/log/#{node['maven-deploy']['application']['name']}" do
@@ -27,6 +28,7 @@ directory "/var/log/#{node['maven-deploy']['application']['name']}" do
   group 'ubuntu'
   mode '0755'
   action :create
+  recursive true
 end
 
 file "/tmp/git_wrapper.sh" do
