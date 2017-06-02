@@ -7,7 +7,7 @@
 # All rights reserved - Do Not Redistribute
 #
 
-include_recipe 'chef_nginx::default'
+include_recipe 'chef_nginx::source'
 
 if node['maven-deploy']['forward']['enable']
     template "/etc/nginx/sites-available/#{node['maven-deploy']['forward']['from']['host']}.forward.conf" do
