@@ -27,7 +27,7 @@ case $key in
     DEFAULT=YES
     ;;
     *)
-            # unknown option
+    JVM="$JVM $key"
     ;;
 esac
 shift # past argument or value
