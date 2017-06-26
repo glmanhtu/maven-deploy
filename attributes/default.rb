@@ -2,6 +2,8 @@
 # Your application name
 default['maven-deploy']['application']['name'] = ''
 
+default['maven-deploy']['application']['port'] = 8080
+
 # Location, which our application will save
 default['maven-deploy']['dir'] = '/usr/local/maven-deploy'
 
@@ -23,7 +25,10 @@ default['maven-deploy']['git']['url'] = ''
 
 # Select git branch
 default['maven-deploy']['git']['branch'] = 'master'
-default['maven-deploy']['git']['key'] = ''
+default['maven-deploy']['git']['private'] = false
+default['maven-deploy']['git']['databag']['name'] = 'databag'
+default['maven-deploy']['git']['databag']['key'] = 'private'
+default['maven-deploy']['git']['databag']['property'] = 'private_ssh_key'
 
 
 default['maven-deploy']['forward']['enable'] = false

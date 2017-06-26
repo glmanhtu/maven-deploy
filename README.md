@@ -7,11 +7,10 @@ This cookbook help you easy to deploy your maven project into server
 cookbook 'apt'
 cookbook 'java'
 cookbook 'maven'
+depends 'chef_nginx'
 
-e.g.
 ### Platforms
 
-- SandwichOS
 - Ubuntu
 - Fedora
 - CentOS

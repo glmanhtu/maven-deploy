@@ -15,7 +15,6 @@ case $key in
     ;;
     -arg|--argument)
     JVM="$2"
-    shift # past argument
     ;;
     start)
     MODE="start"
@@ -27,7 +26,7 @@ case $key in
     DEFAULT=YES
     ;;
     *)
-    JVM="$JVM $key"
+    JVM="$JVM $2"
     ;;
 esac
 shift # past argument or value

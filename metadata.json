@@ -1,0 +1,36 @@
+{
+  "name": "maven-deploy",
+  "description": "Installs/Configures maven-deploy",
+  "long_description": "# Maven Deployment Cookbook\n\nThis cookbook help you easy to deploy your maven project into server\n\n## Requirements\n\ncookbook 'apt'\ncookbook 'java'\ncookbook 'maven'\ndepends 'chef_nginx'\n\n### Platforms\n\n- Ubuntu\n- Fedora\n- CentOS\n\n### Chef\n\n- Chef 12.0 or later\n\n### Cookbooks\n\n## Attributes\n\n\ne.g.\n### exchange-expert::default\n\n<table>\n  <tr>\n    <th>Key</th>\n    <th>Type</th>\n    <th>Description</th>\n    <th>Default</th>\n  </tr>\n  <tr>\n    <td><tt>['maven-deploy']['dir']</tt></td>\n    <td>String</td>\n    <td>Location to deploy</td>\n    <td><tt>true</tt></td>\n  </tr>\n  <tr>\n      <td><tt>['maven-deploy']['jar']</tt></td>\n      <td>String</td>\n      <td>Final Jar name</td>\n      <td><tt>true</tt></td>\n  </tr>\n  <tr>\n        <td><tt>['maven-deploy']['profile']</tt></td>\n        <td>String</td>\n        <td>Active Spring profile</td>\n        <td><tt>true</tt></td>\n  </tr>\n\n  <tr>\n        <td><tt>['maven-deploy']['git']['url']</tt></td>\n        <td>String</td>\n        <td>Your git repository</td>\n        <td><tt>true</tt></td>\n  </tr>\n  <tr>\n          <td><tt>['maven-deploy']['git']['branch']</tt></td>\n          <td>String</td>\n          <td>Your git branch</td>\n          <td><tt>true</tt></td>\n    </tr>\n\n\n</table>\n\n## Usage\n\n### maven-deploy::default\n\nTODO: Write usage instructions for each cookbook.\n\ne.g.\nJust include `maven-deploy` in your node's `run_list`:\n\n```json\n{\n  \"name\":\"my_node\",\n  \"run_list\": [\n    \"recipe[maven-deploy]\"\n  ]\n}\n```\n\n## Contributing\n\ne.g.\n1. Fork the repository on Github\n2. Create a named feature branch (like `add_component_x`)\n3. Write your change\n4. Write tests for your change (if applicable)\n5. Run the tests, ensuring they all pass\n6. Submit a Pull Request using Github\n\n## License and Authors\n\nAuthors: glmanhtu\n\n",
+  "maintainer": "glmanhtu",
+  "maintainer_email": "glmanhtu@gmail.com",
+  "license": "All rights reserved",
+  "platforms": {
+
+  },
+  "dependencies": {
+    "chef_nginx": ">= 0.0.0"
+  },
+  "providing": {
+
+  },
+  "attributes": {
+
+  },
+  "recipes": {
+
+  },
+  "version": "0.2.3",
+  "source_url": "",
+  "issues_url": "",
+  "privacy": false,
+  "chef_versions": [
+
+  ],
+  "ohai_versions": [
+
+  ],
+  "gems": [
+
+  ]
+}
