@@ -89,7 +89,7 @@ bash 'stop current service' do
 end
 
 bash 'maven build project' do
-  code "cd #{repo} && mvn clean install -DskipTests"
+  code "cd #{repo} && SPRING_PROFILES_ACTIVE=#{profile} mvn clean install"
 end
 
 bash 'start service' do
