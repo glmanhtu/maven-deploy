@@ -11,11 +11,12 @@ include_recipe 'maven-deploy::forward'
 profile = node['maven-deploy']['profile']
 source_dir = "#{node['maven-deploy']['dir']}/#{node['maven-deploy']['application']['name']}"
 repo = "#{source_dir}/repo"
+prevent_deploy_file = "#{source_dir}/#{node['maven-deploy']['application']['prevent-deploy-file']}"
 jar_name = node['maven-deploy']['jar']['name']
 jar_location = "#{repo}/#{node['maven-deploy']['jar']['location']}/#{jar_name}"
 app_port = node['maven-deploy']['application']['port']
 jvm = node['maven-deploy']['jar']['arg']
-jvm = "#{jvm} -Dserver.port=#{app_port}"
+jvm = "#{jvm} -Dserver.port=#{app_port} -Dprevent.deploy.file=#{prevent_deploy_file}"
 
 data_bag_name = node['maven-deploy']['git']['databag']['name']
 data_bag_key = node['maven-deploy']['git']['databag']['key']
@@ -35,6 +36,25 @@ directory "/var/log/#{node['maven-deploy']['application']['name']}" do
   recursive true
 end
 
+
+ruby_block "Check if application is running an important task " do
+  block do
+    if File.exists?(prevent_deploy_file)
+    	status = true
+    	while prevent_status
+    		prevent_status = File.read(prevent_deploy_file)
+      		if prevent_status == "true"
+  			  	Chef::Log.info("Waiting for important task to be done!...")
+      			sleep(30)
+  			else
+				status = false
+			end
+    	end
+	else
+		File.open(prevent_deploy_file, 'w') { |file| file.write("false") }
+    end
+  end
+end
 
 if node['maven-deploy']['git']['private']
 	encrypted_key = Chef::EncryptedDataBagItem.load(data_bag_name, data_bag_key)

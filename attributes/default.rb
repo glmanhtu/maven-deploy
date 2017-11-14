@@ -4,6 +4,8 @@ default['maven-deploy']['application']['name'] = ''
 
 default['maven-deploy']['application']['port'] = 8080
 
+default['maven-deploy']['application']['prevent-deploy-file'] = 'application.status'
+
 # Location, which our application will save
 default['maven-deploy']['dir'] = '/usr/local/maven-deploy'
 
