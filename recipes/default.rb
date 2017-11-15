@@ -41,7 +41,7 @@ ruby_block "Check if application is running an important task " do
   block do
     if File.exists?(prevent_deploy_file)
     	status = true
-    	while prevent_status
+    	while status == true
     		prevent_status = File.read(prevent_deploy_file)
       		if prevent_status == "true"
   			  	Chef::Log.info("Waiting for important task to be done!...")
