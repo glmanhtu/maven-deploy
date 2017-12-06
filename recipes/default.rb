@@ -118,6 +118,12 @@ bash 'stop current service' do
   only_if { ::File.exist?("/var/run/#{jar_name}.#{profile.downcase}.pid") }
 end
 
+if ['maven-deploy']['application']['integration-test']
+	bash 'maven integration-test project' do
+	  code "cd #{repo} && mvn clean verify -P integration-test #{ssl}"
+	end	
+end
+
 bash 'maven build project' do
   code "cd #{repo} && SPRING_PROFILES_ACTIVE=#{profile} mvn clean install #{ssl}"
 end

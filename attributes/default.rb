@@ -4,6 +4,8 @@ default['maven-deploy']['application']['name'] = ''
 
 default['maven-deploy']['application']['port'] = 8080
 
+default['maven-deploy']['application']['integration-test'] = true
+
 default['maven-deploy']['application']['ssl']['enable'] = false
 
 default['maven-deploy']['application']['ssl']['key_store'] = ''
