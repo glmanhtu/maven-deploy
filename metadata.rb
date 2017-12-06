@@ -4,5 +4,5 @@ maintainer_email 'glmanhtu@gmail.com'
 license          'All rights reserved'
 description      'Installs/Configures maven-deploy'
 long_description IO.read(File.join(File.dirname(__FILE__), 'README.md'))
-version          '0.3.0'
+version          '0.3.1'
 depends 'chef_nginx'
