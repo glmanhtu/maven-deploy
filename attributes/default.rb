@@ -4,6 +4,16 @@ default['maven-deploy']['application']['name'] = ''
 
 default['maven-deploy']['application']['port'] = 8080
 
+default['maven-deploy']['application']['ssl']['enable'] = false
+
+default['maven-deploy']['application']['ssl']['key_store'] = ''
+
+default['maven-deploy']['application']['ssl']['key_store_password'] = ''
+
+default['maven-deploy']['application']['ssl']['trust_store'] = ''
+
+default['maven-deploy']['application']['ssl']['trust_store_password'] = ''
+
 default['maven-deploy']['application']['prevent-deploy-file'] = 'application.status'
 
 # Location, which our application will save

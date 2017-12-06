@@ -16,13 +16,23 @@ jar_name = node['maven-deploy']['jar']['name']
 jar_location = "#{repo}/#{node['maven-deploy']['jar']['location']}/#{jar_name}"
 app_port = node['maven-deploy']['application']['port']
 jvm = node['maven-deploy']['jar']['arg']
-jvm = "#{jvm} -Dserver.port=#{app_port} -Dprevent.deploy.file=#{prevent_deploy_file}"
+jvm << " -Dserver.port=#{app_port} -Dprevent.deploy.file=#{prevent_deploy_file}"
 
 data_bag_name = node['maven-deploy']['git']['databag']['name']
 data_bag_key = node['maven-deploy']['git']['databag']['key']
 data_bag_property = node['maven-deploy']['git']['databag']['property']
 
 private_ssh_key = ""
+ssl = ""
+
+if node['maven-deploy']['application']['ssl']['enable']
+	ssl = "-Djavax.net.ssl.keyStore=#{node['maven-deploy']['application']['ssl']['key_store']} "
+	ssl << "-Djavax.net.ssl.keyStorePassword=#{node['maven-deploy']['application']['ssl']['key_store_password']} "
+	ssl << "-Djavax.net.ssl.trustStore=#{node['maven-deploy']['application']['ssl']['trust_store']} "
+	ssl << "-Djavax.net.ssl.trustStorePassword=#{node['maven-deploy']['application']['ssl']['trust_store_password']}"
+end
+
+jvm << ssl
 
 directory source_dir do
   mode '0666'
@@ -109,7 +119,7 @@ bash 'stop current service' do
 end
 
 bash 'maven build project' do
-  code "cd #{repo} && SPRING_PROFILES_ACTIVE=#{profile} mvn clean install"
+  code "cd #{repo} && SPRING_PROFILES_ACTIVE=#{profile} mvn clean install #{ssl}"
 end
 
 bash 'start service' do
