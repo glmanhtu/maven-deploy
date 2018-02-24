@@ -13,6 +13,10 @@ case $key in
     ENVIRONMENT="$2"
     shift # past argument
     ;;
+    -m|--memory)
+    MEMORY_USAGE="$2"
+    shift # past argument
+    ;;
     -arg|--argument)
     JVM="$2"
     ;;
@@ -56,6 +60,22 @@ FILENAME=`basename ${EXECUTABLE}`
 ENV_LOWER=`echo "${ENVIRONMENT}" | tr '[:upper:]' '[:lower:]'`
 pidFile="/var/run/$FILENAME.$ENV_LOWER.pid"
 
+# Total memory in KB
+totalMemKB=$(awk '/MemTotal:/ { print $2 }' /proc/meminfo)
+
+# Percentage of memory to use for Java heap
+usagePercent=90
+
+if [[ -z "$MEMORY_USAGE" ]]; then
+    usagePercent="$MEMORY_USAGE"
+fi
+
+# heap size in KB
+let heapKB=$totalMemKB*$usagePercent/100
+
+# heap size in MB
+let heapMB=$heapKB/1024
+
 if type -p java; then
     _java=java
 elif [[ -n "$JAVA_HOME" ]] && [[ -x "$JAVA_HOME/bin/java" ]];  then
@@ -90,7 +110,7 @@ elif [ "$MODE" = "start" ]; then
         echo "Application can't start because it already running"
         exit 1;
     else
-        nohup ${_java} ${JVM} -Dspring.profiles.active=${ENVIRONMENT} -jar ${EXECUTABLE} > /dev/null 2>&1 &
+        nohup ${_java} ${JVM} -Xmx${heapMB}m -Dspring.profiles.active=${ENVIRONMENT} -jar ${EXECUTABLE} > /dev/null 2>&1 &
         echo $! > ${pidFile}
         echo "Started"
         exit 0;

@@ -4,6 +4,8 @@ default['maven-deploy']['application']['name'] = ''
 
 default['maven-deploy']['application']['port'] = 8080
 
+default['maven-deploy']['application']['max-memory'] = 90
+
 default['maven-deploy']['application']['integration-test'] = true
 
 default['maven-deploy']['application']['ssl']['enable'] = false

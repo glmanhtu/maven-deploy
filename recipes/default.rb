@@ -13,7 +13,9 @@ source_dir = "#{node['maven-deploy']['dir']}/#{node['maven-deploy']['application
 repo = "#{source_dir}/repo"
 prevent_deploy_file = "#{source_dir}/#{node['maven-deploy']['application']['prevent-deploy-file']}"
 jar_name = node['maven-deploy']['jar']['name']
-jar_location = "#{repo}/#{node['maven-deploy']['jar']['location']}/#{jar_name}"
+jar_dir = "#{repo}/#{node['maven-deploy']['jar']['location']}"
+run_dir = "#{source_dir}/run"
+jar_location = "#{run_dir}/#{node['maven-deploy']['jar']['location']}/#{jar_name}"
 app_port = node['maven-deploy']['application']['port']
 jvm = node['maven-deploy']['jar']['arg']
 jvm = "#{jvm} -Dserver.port=#{app_port} -Dprevent.deploy.file=#{prevent_deploy_file}"
@@ -21,6 +23,7 @@ jvm = "#{jvm} -Dserver.port=#{app_port} -Dprevent.deploy.file=#{prevent_deploy_f
 data_bag_name = node['maven-deploy']['git']['databag']['name']
 data_bag_key = node['maven-deploy']['git']['databag']['key']
 data_bag_property = node['maven-deploy']['git']['databag']['property']
+max_memory = node['maven-deploy']['application']['max-memory']
 
 private_ssh_key = ""
 ssl = ""
@@ -34,7 +37,7 @@ end
 
 jvm = "#{jvm} #{ssl}"
 
-directory source_dir do
+directory run_dir do
   mode '0666'
   action :create
   recursive true
@@ -113,11 +116,6 @@ cookbook_file "/tmp/service.sh" do
   mode 0755
 end
 
-bash 'stop current service' do
-  code "./tmp/service.sh stop -e #{profile} -jar #{jar_location}"
-  only_if { ::File.exist?("/var/run/#{jar_name}.#{profile.downcase}.pid") }
-end
-
 if node['maven-deploy']['application']['integration-test']
 	bash 'maven integration-test project' do
 	  code "cd #{repo} && mvn clean verify -P integration-test #{ssl}"
@@ -128,6 +126,15 @@ bash 'maven build project' do
   code "cd #{repo} && SPRING_PROFILES_ACTIVE=#{profile} mvn clean install #{ssl}"
 end
 
+bash 'stop current service' do
+  code "./tmp/service.sh stop -e #{profile} -jar #{jar_location}"
+  only_if { ::File.exist?("/var/run/#{jar_name}.#{profile.downcase}.pid") }
+end
+
+bash 'move project to run dir' do
+	code "rm -rf #{run_dir}/* && cp -R #{jar_dir} #{run_dir}/"
+end
+
 bash 'start service' do
-  code "./tmp/service.sh start -e #{profile} -jar #{jar_location} -arg #{jvm}"
+  code "./tmp/service.sh start -m #{max_memory} -e #{profile} -jar #{jar_location} -arg #{jvm}"
 end
